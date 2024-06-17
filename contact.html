@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElegantEats</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" type="image/jpg" href="public/images/img1.jpg">
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" id="left">Elegant Eats</a></li>
+            <li><a href="about.html" id="right">About</a></li>
+            <li><a href="menu.html" id="right1">Menu</a></li>
+            <li><a href="contact.html" id="right2">Contact</a></li>
+        </ul>
+    </nav>
+    <div id="contact">
+        <p id="contact-main-heading">
+            Contact
+        <p>
+        <p class="contact-content">We offer full-service catering for any event, large or small. We understand your
+            needs and we will cater the food to satisfy the biggerst criteria of them all, both look and taste. Do not
+            hesitate to contact us.
+
+        </p>
+        <h2 id="contact-sub-heading">
+            Catering Service, 42nd Living St, 43043 New York, NY
+        </h2>
+        <p class="contact-content">
+            You can also contact us by phone 00553123-2323 or email catering@catering.com, or you can send us a message
+            here:
+        </p>
+            <input type="text" name="name" id="name" placeholder="Name" required><br>
+            <input type="number" name="people" id="people" placeholder="How many people" ><br>
+            <input type="date" name="date" id="date"><br>
+            <input type="text" name="message" id="message" placeholder="Message/Special requirements"><br>
+            <input type="submit" onclick="submitForm()" name="button" value="SEND MESSAGE"><br>
+    </div>
+    <hr>
+    <div id="footer">
+        <span id="footer-content">&copy; 2024 Elegant Eats. All rights reserved.</span>
+    </div>
+    <script>
+        async function submitForm() {
+            console.log("Called Function");
+            const name = document.getElementById("name").value;
+            console.log(name);
+            const people = document.getElementById("people").value;
+            console.log(people);
+            const date = document.getElementById("date").value;
+            console.log(date);
+            const message = document.getElementById("message").value;
+            console.log(message);
+
+            const sendBody = JSON.stringify({
+                "name": name,
+                "people": people,
+                "date": date,
+                "message": message
+            });
+            console.log("The body is ::", sendBody);
+
+            try {
+                const res = await fetch("http://localhost:3000/contact", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json"
+                    },
+                    body : sendBody
+                });
+                console.log("the response is :::", res.status);
+                
+                if (res.status == 500)
+                {
+                    alert("Details are not sent. Please try again later!");
+                    return;
+                }
+                const responseData = await res.text();
+                alert(responseData);
+            } catch (error) {
+                console.log("Error during fetch :::",error);
+            }
+        }
+    </script>
+</body>
+</html>
