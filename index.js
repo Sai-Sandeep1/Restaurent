@@ -53,7 +53,7 @@ app.post("/signup", JSONparser, async(req,res) => {
   
   app.post("/signin",JSONparser,async(req,res)=>
     {
-      console.log("In the signin route");
+      console.log("In the login route");
       const reqEmail=req.body.email;
       const reqPassword=req.body.password;
       console.log("getting:",req.body);
@@ -64,13 +64,13 @@ app.post("/signup", JSONparser, async(req,res) => {
 
         if(userReturns.length>0)
           {
-              console.log("sign-in successful");
-              res.send("sign-in successful");
+              console.log("login successful");
+              res.send("login successful");
           }
         else{
-              console.log("sign-in failed");
+              console.log("login failed");
               res.status(404);
-              res.send("sign-in failed");
+              res.send("login failed");
           }
   });
 
