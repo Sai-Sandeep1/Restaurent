@@ -19,6 +19,61 @@ mongoose.connect(`mongodb://${server}/${db}`, { useNewUrlParser: true, useUnifie
     console.log("Database connection failed");
 })
 
+const userSchema = new mongoose.Schema(
+    {
+        email : String,
+        password : String
+    }
+);
+const users = new mongoose.model("users", userSchema);
+
+app.post("/signup", JSONparser, async(req,res) => {
+  console.log("In the signup route");
+  console.log("got data:::");
+	const reqEmail = req.body.email;
+  const reqPassword = req.body.password;
+	console.log("read details");
+    const newUser=new users(
+      {
+        email: reqEmail,
+        password: reqPassword
+      }
+    );
+    await newUser.save()
+    .then(() => {
+      console.log('Save user data at MongoDB');
+      res.send("Sign-up is successful!");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+  });
+  
+  
+  app.post("/signin",JSONparser,async(req,res)=>
+    {
+      console.log("In the signin route");
+      const reqEmail=req.body.email;
+      const reqPassword=req.body.password;
+      console.log("getting:",req.body);
+      const userReturns=await users.find({
+          email:reqEmail,
+          password:reqPassword
+      });
+
+        if(userReturns.length>0)
+          {
+              console.log("sign-in successful");
+              res.send("sign-in successful");
+          }
+        else{
+              console.log("sign-in failed");
+              res.status(404);
+              res.send("sign-in failed");
+          }
+  });
+
 const visitorSchema= new mongoose.Schema({
     name: { type: String, required: true },
     NoofPeople: { type: Number, required: true },

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElegantEats</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" type="image/jpg" href="public/images/img1.jpg">
+    <style>
+        a {
+            text-decoration: none;
+        }
+        body {
+            color: rgb(4, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" id="left">Elegant Eats</a></li>
+            <li><a href="about.html" id="right">About</a></li>
+            <li><a href="menu.html" id="right1">Menu</a></li>
+            <li><a href="contact.html" id="right2">Contact</a></li>
+            <li><a href="signup.html" id="right2">Signup</a></li>
+            <li><a href="login.html" id="right2">Login</a></li>
+        </ul>
+    </nav>
+    <div class="center" style="background: url('public/images/img4.jpg') no-repeat center center/cover;">
+        <table style="background-color: whitesmoke; padding: 40px; border-radius: 15px;">
+            <tr>
+                <td colspan="2" align="center"><h2>Sign up Page</h2></td>
+            </tr>
+            <tr>
+                <td><h4>Email :</h4></td>
+                <td><input type="email" id="email"></td>
+            </tr>
+            <tr>
+                <td><h4>Password :</h4></td>
+                <td><input type="password" id="password"></td>
+            </tr>
+            <tr>
+                <td><h4>Confirm Password :</h4></td>
+                <td><input type="password" id="confirm_password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" onclick="submitForm()" name="button" value="Submit"><br><br></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><h4>Already have an account? <a href="signin.html">Login</a></h4></td>
+            </tr>
+        </table>
+    </div>
+    
+    <hr>
+    <div id="footer">
+        <span id="footer-content">&copy; 2024 Elegant Eats. All rights reserved.</span>
+    </div>
+    <script>
+        async function submitForm() {
+            console.log("Called function");
+            const userEmail = document.getElementById("email").value;
+            console.log(userEmail);
+            const userPassword = document.getElementById("password").value;
+            console.log(userPassword);
+            const userConfirmPassword = document.getElementById("confirm_password").value;
+            console.log(userConfirmPassword);
+            if(userPassword != userConfirmPassword)
+            {
+                alert("Passwords do not match");
+                return;
+            }
+            const sendBody = JSON.stringify({
+                    "email":userEmail,
+                    "password": userPassword
+            });
+
+            console.log("the body is :::", sendBody);
+
+            try {
+                const res = await fetch("http://localhost:3000/signup", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json"
+                    },
+                    body : sendBody
+                });
+                console.log("the response is :::", res.status);
+                if (res.ok) {
+                    location.replace('signin.html');
+                } else {
+                    alert("Sign-up failed! Try again.");
+                }
+            } catch (error) {
+                console.log("Error during fetch :::", error);
+                alert("An error occurred. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>

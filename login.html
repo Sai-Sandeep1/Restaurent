@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElegantEats</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" type="image/jpg" href="public/images/img1.jpg">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" id="left">Elegant Eats</a></li>
+            <li><a href="about.html" id="right">About</a></li>
+            <li><a href="menu.html" id="right1">Menu</a></li>
+            <li><a href="contact.html" id="right2">Contact</a></li>
+            <li><a href="signup.html" id="right2">Signup</a></li>
+            <li><a href="login.html" id="right2">Login</a></li>
+        </ul>
+    </nav>
+    <div class="center" style="background: url('public/images/img4.jpg') no-repeat center center/cover;">
+        <table style="background-color: whitesmoke; padding: 40px; border-radius: 15px;">
+            <tr>
+                <td colspan="2" align="center"><h2>Login Page</h2></td>
+            </tr>
+            <tr>
+                <td><h4>Email :</h4></td>
+                <td><input type="email" id="email"></td>
+            </tr>
+            <tr>
+                <td><h4>Password :</h4></td>
+                <td><input type="password" id="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input id="signup" type="submit" value="Login" onclick="submitForm()"><br><br></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><h4>Dont have an account? <a href="signup.html">Signup</a></h4></td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <div id="footer">
+        <span id="footer-content">&copy; 2024 Elegant Eats. All rights reserved.</span>
+    </div>
+    <script>
+        async function submitForm() {
+            console.log("called function");
+            const userEmail = document.getElementById("email").value;
+            console.log(userEmail);
+            const userPassword = document.getElementById("password").value;
+            console.log(userPassword);
+
+            const sendBody = JSON.stringify({
+                    "email":userEmail,
+                    "password": userPassword
+            });
+
+            console.log("the body is :::", sendBody);
+
+            try {
+                const res = await fetch("http://localhost:3000/signin", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type": "application/json"
+                    },
+                    body : sendBody
+                });
+                console.log("the response is :::", res.status);
+                if (res.status == 404)
+                {
+                    alert("Sign-in failed! try again with valid credentials!");
+                    return;
+                }
+                const responseData = await res.text();
+                alert(responseData);
+                location.replace('index.html');
+            } catch (error) {
+                console.log("Error during fetch :::",error);
+            }
+        }
+    </script>
+</body>
+</html>
